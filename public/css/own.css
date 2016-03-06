@@ -1,0 +1,19 @@
+@media (min-width: 48em) {
+  .sidebar {
+    width: 14rem;
+  }
+}
+
+.sidebar-img { 
+	margin: 0 auto;
+	padding-bottom: 1rem;
+}
+
+/* Light blue theme */
+.theme-base-18 .sidebar {
+  background-color: #304ffe;
+}
+.theme-base-18 .content a,
+.theme-base-18 .related-posts li a:hover {
+  color: #304ffe;
+}
