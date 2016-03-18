@@ -3,5 +3,5 @@ jekyll_service:
   ports:
     - "4000:4000"
   volumes:
-    - /Users/mariol/Documents/web:/srv/jekyll
+    - .:/srv/jekyll
   container_name: jekyll_container

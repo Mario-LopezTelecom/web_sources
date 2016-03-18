@@ -4,15 +4,26 @@
       <h1>
           {{ site.title }}
       </h1>
-      <img class="image-responsive sidebar-img" src="{{ site.baseurl }}pics/Dr_Mario.jpg" alt="Dr. Mario">
+      {% if page.title == "Responsive CV" %}
+      <img class="sidebar-img" src="{{ site.baseurl }}pics/foto_cv.jpg" alt="Dr. Mario">
+      {% else %}
+      <img class="sidebar-img" src="{{ site.baseurl }}pics/Dr_Mario.jpg" alt="Dr. Mario">
+      {% endif %}
+      
     </div>
 
     <nav class="sidebar-nav">
-      <a class="sidebar-nav-item" href="{{ site.baseurl }}">About me</a>
-      <a class="sidebar-nav-item" href="{{ site.baseurl }}portfolio"> Portfolio</a>
-      <a class="sidebar-nav-item" href="{{ site.baseurl }}blog">Blog</a>
+      <a class="sidebar-nav-item" href="{{ site.baseurl }}about_me">About me</a> 
+      <a class="sidebar-nav-item" href="{{ site.baseurl }}responsive_cv">Responsive CV</a>
+      <a class="sidebar-nav-item" href="{{ site.baseurl }}portfolio">Portfolio</a>
+      <a class="sidebar-nav-item" href="{{ site.baseurl }}">Blog</a>
       <a class="sidebar-nav-item" href="{{ site.baseurl }}quantified_self">Quantified self</a>
-      <a class="sidebar-nav-item" href="{{ site.baseurl }}target_list">Target List</a>
+      <a class="sidebar-nav-item" href="{{ site.baseurl }}target_list">Target List </a>
     </nav>
+    <p class="contact-icons">
+      <a class="fa fa-github" href="https://github.com/Mario-LopezTelecom"></a>
+      <a class="fa fa-linkedin" href="https://es.linkedin.com/in/mariolopezmartinez"></a>
+      <a class="fa fa-envelope-o" href="mailto:mario.lopezTelecom@gmail.com"></a>
+    </p>
   </div>
 </div>

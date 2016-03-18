@@ -4,10 +4,37 @@
   }
 }
 
+/* Dr. Mario sidebar image style */
 .sidebar-img { 
 	margin: 0 auto;
 	padding-bottom: 1rem;
 }
+
+.contact-icons {
+	text-align: center;
+}
+
+/* Image captions */
+.my-caption {
+	font-family: "Times New Roman";
+	font-style: italic;
+	width: 75%;
+	margin: auto;
+	text-align: justify;
+}
+
+@media (min-width: 48em) {
+	.my-caption {
+		font-size: 12px;
+	}
+}	
+
+@media (min-width: 58em) {
+	.my-caption {
+		font-size: 18px;
+	}
+}
+
 
 /* Light blue theme */
 .theme-base-18 .sidebar {

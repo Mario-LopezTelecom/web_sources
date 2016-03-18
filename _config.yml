@@ -20,9 +20,9 @@ gems:
                 - jekyll-paginate
                 - jekyll-gist
 
-paginate:         5
+paginate:         3
 paginate_path:    "page:num"
-
+excerpt_separator: <!--more-->
 exclude:
                 - docker-compose
                 - .gitignore
