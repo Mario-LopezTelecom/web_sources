@@ -35,6 +35,15 @@
 	}
 }
 
+/* CV headings */
+.cv-heading {
+	background-color: #304ffe;
+	color: white;
+    margin-top: 0;
+    margin-bottom:0;
+    border-style: solid;
+    border-color: black;
+}
 
 /* Light blue theme */
 .theme-base-18 .sidebar {

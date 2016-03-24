@@ -3,7 +3,7 @@ layout: page
 title: Responsive CV
 ---
 ## Mario López Martínez - Doctor en Ingeniería de Telecomunicación
-### Experiencia
+<h3 class="cv-heading"> Experiencia </h3>
 **Software Engineer**, desde diciembre 2015. Brain-tec AG.  
 Desarrollo de soluciones personalizadas que integran ERP, BI, CRM y CMS, basadas en el software libre OpenERP/Odoo.  
 *Skills: Python, HTML5, CSS, Javascript, XML, Xpath, Docker.* 
@@ -27,7 +27,7 @@ Proyecto internacional en Alemania. Consiste en la implementación de la funcion
 Participé en el proyecto de actualización del software del Centro de Procesado de Datos (sistemas operativos, servicios de directorio y software corporativo), estudiando su impacto y guiando su realización. Creé un entorno de réplica donde simular el proceso y demostré cómo realizarlo con mínimo tiempo de caída de servicio y bajo coste.  
 *Skills: Windows Server, Microsoft Exchange, Active Directory.* 
 
-### Formación académica – Universidad Politécnica de Cartagena
+<h3 class="cv-heading"> Formación académica – Universidad Politécnica de Cartagena </h3>
 
 **Doctorado en Ingeniería de Telecomunicación**, 2012-2015.  
 “Coexistence policies in cognitive radio”. Departamento de Tecnologías de la Información y las Comunicaciones.  
@@ -41,7 +41,7 @@ Participé en el proyecto de actualización del software del Centro de Procesado
 Colaboré en el desarrollo de un dispositivo embebido para procesado de imágenes, con el objetivo de dotarlo de sistema operativo. Desarrollé una guía para portar Linux y librerías gráficas a diseños hardware parametrizables en una FPGA. Utilicé principalmente código abierto y compartí los resultados con la comunidad: http://goo.gl/lNMtBL. *Skills: C, Kernel de Linux, VHDL, Xilinx Platform Studio y SDK.*
 
 
-###Otras aptitudes
+<h3 class="cv-heading"> Otras aptitudes </h3>
 
 **Ingles:** Certificado de nivel C1 (“dominio operativo eficaz”) en el MCER, 2012. Universidad de Cambridge.  
 
@@ -60,7 +60,7 @@ Colaboré en el desarrollo de un dispositivo embebido para procesado de imágene
 + Desarrollo de un periódico universitario, 2010. *Gestión del tiempo.*
 
 
-### Publicaciones
+<h3 class="cv-heading"> Publicaciones </h3>
 
 + M. López-Martínez, J. J. Alcaraz, L. Badia, and M. Zorzi, [A superprocess with upper confidence bounds for cooperative spectrum sharing,](http://ieeexplore.ieee.org/xpl/articleDetails.jsp?reload=true&arnumber=7390272) IEEE Trans. Mobile Comput, DOI: 10.1109/TMC.2016.2516991.
 + M. López-Martínez, J. J. Alcaraz, J. Vales-Alonso, and J. Garcia-Haro, [Automated spectrum trading mechanisms: understanding the big picture,](http://link.springer.com/article/10.1007%2Fs11276-014-0812-0) Wireless Networks, Springer US, vol. 21, no. 2, pp. 685-708, Jan. 2015.
@@ -72,7 +72,7 @@ Colaboré en el desarrollo de un dispositivo embebido para procesado de imágene
 + J. Alcaraz, J. Ayala-Romero, M. López-Martínez, and J. Vales-Alonso, [Combining dual tessellation and temporal opportunities for spectrum reuse in cellular systems,](http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=6933402&url=http%3A%2F%2Fieeexplore.ieee.org%2Fxpls%2Fabs_all.jsp%3Farnumber%3D6933402) in 11th International Symposium on Wireless Communications Systems (ISWCS), Aug. 2014, pp. 486–490. ​
 + J. J. Alcaraz, M. López-Martínez, J. Ayala-Romero, J. Vales-Alonso, and J. Garcia-Haro, “Uncertainty-aware opportunistic spectrum access in coexistence-friendly systems," IEEE Transactions on Cognitive Communications and Networking, en revisión.
 
-
+<script src="{{ site.baseurl }}public/js/collapsible.js"></script>
 
 
 
