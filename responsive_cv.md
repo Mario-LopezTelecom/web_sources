@@ -38,7 +38,7 @@ Participé en el proyecto de actualización del software del Centro de Procesado
 **Ingeniería de Telecomunicación**, 2005 – 2011.  
 
 + Beca Erasmus Proyecto Final de Carrera, 2010 – 2011. Loughborough University, Reino Unido.
-Colaboré en el desarrollo de un dispositivo embebido para procesado de imágenes, con el objetivo de dotarlo de sistema operativo. Desarrollé una guía para portar Linux y librerías gráficas a diseños hardware parametrizables en una FPGA. Utilicé principalmente código abierto y compartí los resultados con la comunidad: http://goo.gl/lNMtBL. *Skills: C, Kernel de Linux, VHDL, Xilinx Platform Studio y SDK.*
+Colaboré en el desarrollo de un dispositivo embebido para procesado de imágenes, con el objetivo de dotarlo de sistema operativo. Desarrollé una guía para portar Linux y librerías gráficas a diseños hardware parametrizables en una FPGA. Utilicé principalmente código abierto y compartí los resultados con la comunidad: [http://goo.gl/lNMtBL](http://goo.gl/lNMtBL). *Skills: C, Kernel de Linux, VHDL, Xilinx Platform Studio y SDK.*
 
 
 <h3 class="cv-heading"> Otras aptitudes </h3>
