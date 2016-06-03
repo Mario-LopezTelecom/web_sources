@@ -1,55 +1,69 @@
-@media (min-width: 48em) {
-  .sidebar {
-    width: 14rem;
-  }
+/* Light blue theme */
+.theme-base-18 .sidebar {
+    background-color: #304ffe;
+}
+
+.theme-base-18 .content a,
+.theme-base-18 .related-posts li a:hover {
+    color: #304ffe;
 }
 
 /* Dr. Mario sidebar image style */
 .sidebar-img { 
-	margin: 0 auto;
-	padding-bottom: 1rem;
+    margin: 0 auto;
+    padding-bottom: 1rem;
 }
 
 .contact-icons {
-	text-align: center;
-}
-
-/* Image captions */
-.my-caption {
-	font-family: "Times New Roman";
-	font-style: italic;
-	width: 75%;
-	margin: auto;
-	text-align: justify;
+    text-align: center;
 }
 
 @media (min-width: 48em) {
-	.my-caption {
-		font-size: 12px;
-	}
-}	
+    .sidebar {
+        width: 14rem;
+    }
+}
+
+@media (max-height: 90ex) {
+    .sidebar-img {
+        display:none;
+    }
+} 
+
+/* Image captions */
+.my-caption {
+    font-family: "Times New Roman";
+    font-style: italic;
+    width: 75%;
+    margin: auto;
+    text-align: justify;
+}
+
+@media (min-width: 48em) {
+    .my-caption {
+        font-size: 12px;
+    }
+}
 
 @media (min-width: 58em) {
-	.my-caption {
-		font-size: 18px;
-	}
+    .my-caption {
+        font-size: 18px;
+    }
 }
 
 /* CV headings */
 .cv-heading {
-	background-color: #304ffe;
-	color: white;
+    background-color: #304ffe;
+    color: white;
     margin-top: 0;
-    margin-bottom:0;
+    margin-bottom: 0;
     border-style: solid;
-    border-color: black;
+    border-color: white
 }
 
-/* Light blue theme */
-.theme-base-18 .sidebar {
-  background-color: #304ffe;
+.cv-icon{
+    margin-left: 0.25em;
 }
-.theme-base-18 .content a,
-.theme-base-18 .related-posts li a:hover {
-  color: #304ffe;
-}
+
+
+
