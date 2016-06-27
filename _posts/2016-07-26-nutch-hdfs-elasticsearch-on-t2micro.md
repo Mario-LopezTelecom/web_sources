@@ -4,7 +4,7 @@ title: Nutch, HDFS, and Elasticsearch on AWS t2.micro instances (Free Tier)
 image: 2016-06-26/system_diagram.png
 ---
 
-As a small exercise I committed to see how far I could go into the following task definition: 
+As an exercise I committed to see how much I could accomplish of the following task definition: 
 
 > Configure an HTTP crawler on Amazon AWS (Free Tier) with high performance and index a couple of websites.
 >
@@ -14,14 +14,15 @@ As a small exercise I committed to see how far I could go into the following tas
 > +  Use ElasticSearch for storage and indexing.
 
 <!--more-->
-And this is what I got after a week of work and a total of 15 hours:
+And this is what I got after a week of work (15 hours):
+
 <img style="display:block;margin:auto" src="{{ site.baseurl }}pics/2016-06-26/system_diagram.png" alt=""/>
 
 +  Three Amazon EC2 t2.micro instances running Hadoop 2.6.4: one as master and two worker nodes.
 +  Apache Nutch 1.12 successfully running on top of the Hadoop cluster.
 +  An Elasticsearch cluster of two nodes successfully indexing the results of the Nutch crawl (5 shards and 1 replica).
 
-Which we can compare to my initial estimation:
+Which we can compare to my initial estimation, assuming I would be able to work for a week, for a total of 10 hours:
 
 +  `[COMPLETED]`. Nutch running on top of a 3-machine Hadoop cluster (85% chance of success).
 +  `[COMPLETED]`. ElasticSearch integration (65% chance of success).
@@ -35,36 +36,36 @@ This means that my final performance got pretty close to the expected results.
 
 1) Spin up three t2.micro instances with the following Amazon Machine Image: Amazon Linux AMI 2016.03.2 (HVM), SSD Volume Type - ami-f303fb93. No need to change anything on the default configuration, but keep all three instances within the same Security Group [1].
 
-2) In addition to the default SSH rule, include the following inbound rules in the Security Group (Type, Protocol, Port Range, Source):
+2) In addition to the default SSH rule, add the following inbound rules to the Security Group (Type, Protocol, Port Range, Source):
 
 +  All traffic, All, All, `$your_security_group`: this allows the three machines to communicate with each other
 +  Custom TCP, TCP, 50700, `$ips_for_web_access`.
-+  Same than above for ports 8088, 19888: these last two rules will allow you to access the web UI of ResourceManager and JobHistory Server to track the state of jobs and nodes (from the computers within `$ips_for_web_access).
++  Same than above for ports 8088, 19888: these last two rules will allow you to access the web UI of ResourceManager and JobHistory Server to track the state of jobs and nodes (from the computers whose IPs are in `$ips_for_web_access).
 
-3) Download Hadoop 2.6.4 binaries from [3]. Configure it according to the this gist [4]. Helpful resources on this step are [5-7]. Only a few remarks are needed for a configuration on different machines:
+3) Download Hadoop 2.6.4 binaries from [3]. Configure it according to this gist [4]. Helpful resources on this step are [5-7]. Only a few remarks are needed for configuration on different machines:
 
 +  `core_site.xml/fs.defaultFS`. This address is your address of the node that will act as NameNode.
 +  `slaves`. Change the address in there for the address of your worker nodes.
 +  `yarn_site.xml/yarn.resourcemanager.hostname`. This is the address of the node that will act as ResourceManager.
 
-4) Before start using the dfs, we have to format it by running the following in the master node:
+4) Before start using the Distributed FileSystem (DFS), we have to format it by running the following command in the master node:
 
 ```
 $HADOOP_HOME/bin/hdfs namenode -format $cluster_name
 ```
 where `$cluster_name` is a name of your choice.
 
-5) At this point, the hdfs (and YARN) should work. We can start all the required processes in all machines by running on the master node:
+5) At this point, the hdfs (and YARN) should work. We can start all the required processes in all t2.micro instances by running on the master node:
 
 ```
 $HADOOP_HOME/sbin/start-dfs.sh
 $HADOOP_HOME/sbin/start-yarn.sh
 $HADOOP_HOME/sbin/mr-jobhistory-daemon.sh start historyserver
 ```
-6) We can test that everything when fine by taking the following actions:
+6) We can test that all processes are up by taking the following actions:
 
-+  Running on `jps` on the master node and slave nodes, which should display the corresponding processes. You will need to instal java-devel first (`yum install java-devel).
-+  We can put any file on the dfs from any node by running:
++  Running on `jps` on the master node and slave nodes, which should display the name of the corresponding processes. You will need to instal java-devel first (`yum install java-devel).
++  We can put any file on the DFS from any node by running:
 
 ```
 hdfs dfs -mkdir /test_dir
@@ -72,7 +73,7 @@ hdfs dfs -put $any_file_in_local_storage /test_dir/$file_name
 ```
 And retrieving them in any other node by running `hdfs dfs -get /test_dir/$file_name $file_name`.
 
-+ Finally, we are ready to run a the popular WordCount MapReduce example. For example, save a text file "hello_world.txt" with the words "hello world hello Hello". Then, run these commands:
++ Finally, we are ready to run the popular WordCount MapReduce example. For example, save a text file "hello_world.txt" with the words "hello world hello Hello". Then, run these commands:
 
 ```
 hdfs dfs -mkdir /hello_world_in
@@ -87,7 +88,7 @@ hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.4.j
 hdfs dfs -cat /hello_world_out/part*
 ```
 
-You should see in stdout:
+You should see in stdout the corresponding word count:
 
 ```
 Hello    1
@@ -96,7 +97,7 @@ world    1
 ```
 
 ###1.2. Nutch
-7) Download Apache Nutch 1.12 source from [14] to your "master" t2.micro instance. Good guides to follow are [15-16], although please note that step 12 is now different than in those resources.
+7) Download Apache Nutch 1.12 source from [14] to your "master" t2.micro instance. Good guides to follow are [15-16], although please note that step 12 is now different than in those resources [20].
 
 8) Configure `$NUTCH_HOME/conf/nutch-site.xml` according to [4]. At this point, the only mandatory property is `http.agent.name`, which can be set to any arbitrary value.
 
@@ -110,7 +111,7 @@ world    1
 
 11) Install ant in order to compile Nutch (`yum install ant`), and run `ant runtime` on `$NUTCH_HOME`.
 
-12) To test the crawl (without indexing), create a file `seeds.txt`, put in the dfs (_e.g.,_ in `/urls` folder), and then run:
+12) To test the crawl (without indexing), create a file `seeds.txt`, put in the DFS (_e.g.,_ in `/urls` folder), and then run:
 
 ```
 $NUTCH_HOME/runtime/deploy/bin /urls /crawlOutput $rounds
@@ -161,11 +162,11 @@ and you will see something similar to this:
 ###2.1 Architecture
 **2.1.1. Decision #1. How to split the required Hadoop roles.**
 
-The decision of having a master coordinator-only node instead of three worker nodes where one also holds the master role, came from the intuition that t2.micro instances, with 1GB of RAM, were going to struggle even under moderate workload. The memory issues I had later, as well as this StackOverflow post [8], confirmed this intuition.
+The decision of having a master coordinator-only node, instead of three worker nodes where one also holds the master role, came from the intuition that t2.micro instances, with 1GB of RAM, were going to struggle even under moderate workload. The memory issues I had later, as well as this StackOverflow post [8], confirmed this intuition.
 
 **2.1.2. Decision #2. Elasticsearch cluster.**
 
-Facing the previously mentioned memory issue, I was not sure on which node will be harmed the most by also holding an Elasticsearch node. Because of that, for experimentation purposes, I decided to spin up an Elasticsearch node both on my "master" t2.micro instance and on one worker node, but not on the other (so that at least one node has a lower workload and a chance to survive a crash.) Ideally, I would have put elasticsearch on a separate t2.micro instance, but that would have got me out of the free tier.
+Facing the previously mentioned memory issue, I was not sure on which node will be harmed the most by also running an Elasticsearch instance. Because of that, for experimentation purposes, I decided to spin up an Elasticsearch instance both on my "master" t2.micro instance and on one worker node, but not on the other (so that at least one node has a lower workload and a better chance to survive the workload.) Ideally, I would have put elasticsearch instances on separate t2.micro instance, but that would have got me out of the free tier.
 
 
 ###2.2. Configuration: memory issues
@@ -173,14 +174,14 @@ This has been, by far, the most difficult problem to solve. When running the who
 
 **2.2.1. Identifying the issue**
 
-Both examples of wordcount, as well as all the phases of Nutch crawl seem to run without errors (in this latter case, I could still see some failed map and reduce tasks). However, the indexing step of Nutch failed almost always. Fortunately, I could just run the indexing step on an existing segment from a previous crawl, with:
+Wordcount examples, as well as all the phases of Nutch crawl seem to run without errors (in this latter case, I could still see some failed map and reduce tasks). However, the indexing step of Nutch almost always failed. Fortunately, I could just run the indexing step on an existing segment from a previous crawl, with:
 
 ```
 $NUTCH_HOME/runtime/deploy/bin/nutch index /crawlOutput//crawldb -linkdb /crawlOutput//linkdb /crawlOutput//segments/20160623170331
 ```
-where `crawlOutput` is the folder in the dfs that held the segments of the Nutch crawl.
+where `crawlOutput` is the folder in the DFS that held the segments of the Nutch crawl.
 
-The stack traces I could see in the terminal where I launched the application, as well as in the ResourceManager web UI (or in the JobHistory Server) were not informative most of the times:
+The stack traces I could see in the terminal where I launched the application, as well as in the ResourceManager web UI (or in the JobHistory Server) were not very informative most of the times:
 
 ```
 Exit code: 1
@@ -199,7 +200,7 @@ at java.lang.Thread.run(Thread.java:745)
 
 But, at some point I realized that, randomly, one of these things happened:
 
-+  The elasticsearch node process was killed and I could see `org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available`. If I tried to start it again, I could even see on the terminal: `java.lang.OutOfMemoryError`.
++  The elasticsearch process was killed and I could see `org.elasticsearch.client.transport.NoNodeAvailableException: None of the configured nodes are available` on the stack traces. If I tried to start it again, I could even see on the terminal: `java.lang.OutOfMemoryError`.
 +  `Error: unable to create new native thread Container killed by the ApplicationMaster. Container killed on request. Exit code is 143 Container exited with a non-zero exit code 143`.
 +  "Slave1" t2.micro instance disappeared from the "Nodes" page on the ResourceManager web UI (and running `jps` on its terminal will show no sign of the NodeManager running).
 
@@ -211,19 +212,21 @@ The affected nodes run out of memory, and the OS killed one of the most consumin
 
 **2.2.3. The solution**
 
-I reached the solution in two steps. First, this StackOverflow post allowed me to reach this page [10] about Hadoop memory configuration. Doing a quick check on the default values for properties such as `yarn.nodemanager.resource.memory-mb` [11] made me realize that they were unsuitable for a t2.micro instance (the default value of that property, which indicates the amount of physical memory that can be allocated for containers, was set to 8GB...). Thus, I changed my values according to [10].
+I reached the solution in two steps. First, this StackOverflow post allowed me to reach this page [10] about Hadoop memory configuration. Doing a quick check on the default values for properties such as `yarn.nodemanager.resource.memory-mb` [11] made me realize that they were unsuitable for a t2.micro instance (the default value of that property, which indicates the amount of physical memory that can be allocated for containers, was set to 8GB...). Thus, I changed my values according to [10]: I set a maximum limit of 768Mb for Hadoop processes, leaving some free memory for the OS.
 
 This was not enough, however. Now the tasks were never allocated to any node and the jobs were never completed. It turns out there was also a need to restrict the amount of memory of the MR AppMaster containers [12], thus, accordingly, I set appropriate values for `yarn.app.mapreduce.am.resource.mb` and `yarn.app.mapreduce.am.command-opts` [13]. And this last fix allowed me to run all tasks without errors.
 
 **2.2.4. Still to do**
-I believe that there would be more properties to tweak in order to achieve a higher performance. For example, I set `yarn.scheduler.minimum-allocation-mb` to the same value of `yarn.nodemanager.resource.memory-mb`, which means that only one container is allowed on a worker node, reserving all the available memory (even if the task does not require such amount of memory.). This allows me to be on the safe side regarding memory limits, but for low memory tasks, is results in under-utilization of resources.
+I believe that there would be more properties to tweak in order to achieve a higher performance. For example, I set `yarn.scheduler.minimum-allocation-mb` to the same value of `yarn.nodemanager.resource.memory-mb`, which means that only one container is allowed on a worker node, reserving all the available memory (even if the task does not require such amount of memory.). This allows me to be on the safe side regarding memory limits, but for not memory demanding tasks, it results in under-utilization of resources.
 
 #3. Minor discussions.
 The following comments are related to the respective steps of the mini-guide on section 1.
 
-1- We can only spin up 3 t2.micro instances since the minimal amount of disk that can be set is 8GB, but more than 30GB falls out of the free tier [2]. I chose Amazon Linux AMI thinking that it may already contain certain prerequisites (Java SDK for example). In a production environment, different considerations may apply.
+1a- We can only spin up 3 t2.micro instances since the minimal amount of disk that can be set is 8GB, but more than 30GB falls out of the free tier [2]. I chose Amazon Linux AMI thinking that it may already contain certain prerequisites (Java SDK for example). In a production environment, different considerations may apply.
 
-2- In a production environment, security rules should be as restrictive as possible.
+1b- I did not use any configuration management tool since this is a toy example and I could get by simply by broadcasting my input to terminals connected to all three nodes (using ITerm2), or doing scp of the config files. However, this would not be manageable for a higher number of instances (apart from having to manually reconfigure evertyhing each time a new instance boots up). In addition, Amazon AWS instances change their public IPs and DNS on boot: for this example I simply leave all them up, but again, that may not be cost-efective in a production environment and such environment will require automating the configuration.
+
+2- In a production environment, security rules should be as restrictive as possible. Also, it is convenient to create specific users for Hadoop, Nutch... 
 
 7- I chose Nutch 1.x over 2.x since I do not need the added features of 2.x and it seems to be harder to configure. We cannot use the binaries here, because we want it to run on top of our existing Hadoop cluster, and thus, the config files of our Hadoop installation will take part on the compilation process of Nutch. 
 
@@ -252,6 +255,7 @@ The following comments are related to the respective steps of the mini-guide on 
 [17] <a href=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.4.1.tar.gz>https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.4.1.tar.gz</a><br>
 [18] <a href=https://www.elastic.co/guide/en/elasticsearch/reference/1.4/_create_an_index.html>https://www.elastic.co/guide/en/elasticsearch/reference/1.4/_create_an_index.html</a><br>
 [19] <a href=https://www.mind-it.info/2013/09/26/integrating-nutch-1-7-elasticsearch/>https://www.mind-it.info/2013/09/26/integrating-nutch-1-7-elasticsearch</a><br>
+[20] <a href=https://wiki.apache.org/nutch/NutchTutorial#Crawl_your_first_website/>https://wiki.apache.org/nutch/NutchTutorial#Crawl_your_first_website</a><br>
 </div>
 
 
