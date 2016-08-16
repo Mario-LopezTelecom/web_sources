@@ -1,3 +1,13 @@
+/* Images for portfolio */
+.img-portfolio{
+    max-width: 80%;
+    margin:auto;
+    border-style:solid;
+    border-color:grey;
+    border-width:1px;
+    padding: 2%;
+}
+
 /* Light blue theme */
 .theme-base-18 .sidebar {
     background-color: #304ffe;
